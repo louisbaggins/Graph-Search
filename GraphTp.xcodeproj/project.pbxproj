@@ -25,6 +25,7 @@
 /* Begin PBXFileReference section */
 		EA59FD7822AF36C10000CD9D /* GraphTp */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = GraphTp; sourceTree = BUILT_PRODUCTS_DIR; };
 		EA59FD7B22AF36C10000CD9D /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
+		EA59FD8222AF382F0000CD9D /* Graph.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Graph.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -58,6 +59,7 @@
 			isa = PBXGroup;
 			children = (
 				EA59FD7B22AF36C10000CD9D /* main.cpp */,
+				EA59FD8222AF382F0000CD9D /* Graph.h */,
 			);
 			path = GraphTp;
 			sourceTree = "<group>";
