@@ -8,6 +8,8 @@
 
 #include "Graph.h"
 #include <iostream>
+#include <fstream>
+#include <cstdlib>
 using namespace std;
 void PrintMatrice(int **matrice)
 {
@@ -46,24 +48,41 @@ int** InitializeMatricePointer(int **matrice, int n)
 
 int main(int argc, const char * argv[]) {
     // insert code here...
-    static Graph *graph = new Graph(5);
+    ifstream ip("/Users/luisaraujo/Desktop/POO/GraphTp/GraphTp/GraphValues.csv");
+    
+    if(!ip.is_open()){
+        cout << "Error on reading file" << endl;
+    }
+    
+    int size;
+    string sizes;
+    while(ip.good())
+    {
+        getline(ip, sizes, '\n') ;
+    }
+    
+    ip.close();
+    
+    
+    size = atoi(sizes.c_str());
+    static Graph *graph = new Graph(size);
     static int **matrix;
     matrix = InitializeMatricePointer(matrix, 5);
     Graph *matrice = new Graph(matrix);
     //InitializeMatrice(matrix, 1);
     
-    for(auto g : matrice->ReturnNumberOfArchAndVertices()){
+    for(auto g : graph->ReturnNumberOfArchAndVertices()){
         cout<< g << endl;
     }
     
-    int *vector = graph->Dijkstra(1, 4);
-    for(int j = 0; j<5; j++)
+    //int *vector = graph->Dijkstra(1, 4);
+    /*for(int j = 0; j<5; j++)
     {
         cout << vector[j];
         cout << " - ";
-    }
+    }*/
     
-    cout << vector << endl;
+    //cout << vector << endl;
  
     PrintMatrice(graph->Matriz);
    /* PrintMatrice(graph->Matriz);
