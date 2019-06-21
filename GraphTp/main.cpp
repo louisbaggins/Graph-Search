@@ -17,15 +17,21 @@ void PrintMatrice(int **matrice)
         }
         cout<<endl;
     }
+    
+    cout<<endl;
 }
 
 int** InitializeMatrice(int **matrice, int i)
 {
     for(int a = 0; a< 5; a++){
         for(int b = 0; b<5; b++){
-           matrice[a][b] = i;
+            matrice[a][b] = i;
         }
+        matrice[a][0] = 0;
+        
     }
+    
+  
     return matrice;
 }
 int** InitializeMatricePointer(int **matrice, int n)
@@ -45,29 +51,30 @@ int main(int argc, const char * argv[]) {
     matrix = InitializeMatricePointer(matrix, 5);
     Graph *matrice = new Graph(matrix);
     //InitializeMatrice(matrix, 1);
-
-    
-    PrintMatrice(graph->Matriz);
-    
-    
-    cout<<graph->Edge(0, 3)<<endl;
-    cout<< graph->Insert(1,0)<<endl;
-    PrintMatrice(graph->Matriz);
-    cout<< graph->Remove(1,0)<<endl;
-    PrintMatrice(graph->Matriz);
-    cout<< graph->Remove(2,0)<<endl;
-    for(auto g : graph->ReturnNumberOfArchAndVertices()){
-        cout<< g << endl;
-    }
-    cout<<graph->VerifyIfTheGraphIsComplete()<<endl;
-    cout<<matrice->VerifyIfTheGraphIsComplete()<<endl;
-    PrintMatrice(matrice->Matriz);
     
     for(auto g : matrice->ReturnNumberOfArchAndVertices()){
         cout<< g << endl;
     }
     
+    int *vector = graph->Dijkstra(1, 4);
+    for(int j = 0; j<5; j++)
+    {
+        cout << vector[j];
+        cout << " - ";
+    }
     
-    cout << "Hello, World!\n";
+    cout << vector << endl;
+ 
+    PrintMatrice(graph->Matriz);
+   /* PrintMatrice(graph->Matriz);
+    PrintMatrice(matrice->Matriz);
+    graph->DeepFirstSearch(0);
+    cout << "" << endl;
+    graph->Remove(0, 1);
+    graph->Remove(2, 1);
+    for(auto g : graph->BreadthFirstSearch(0, 2)){
+        cout<< g << endl;
+    }*/
+    
     return 0;
 }
