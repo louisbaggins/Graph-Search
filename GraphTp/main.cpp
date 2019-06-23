@@ -7,6 +7,7 @@
 //
 
 #include "Graph.h"
+#include "GraphSpecs.h"
 #include <iostream>
 #include <fstream>
 #include <cstdlib>
@@ -48,6 +49,8 @@ int** InitializeMatricePointer(int **matrice, int n)
 
 int main(int argc, const char * argv[]) {
     // insert code here...
+    
+    GraphSpecs *graphSpecs = new GraphSpecs();
     ifstream ip("/Users/luisaraujo/Desktop/POO/GraphTp/GraphTp/GraphValues.csv");
     
     if(!ip.is_open()){
@@ -56,16 +59,24 @@ int main(int argc, const char * argv[]) {
     
     int size;
     string sizes;
+    string x;
+    string y;
+    string weight;
     while(ip.good())
     {
-        getline(ip, sizes, '\n') ;
+        getline(ip,x,',');
+        getline(ip,y,',') ;
+        getline(ip,weight,'\n') ;
+        
+        graphSpecs->AddSpecs(x, y, weight);
     }
     
     ip.close();
     
     
     size = atoi(sizes.c_str());
-    static Graph *graph = new Graph(size);
+    
+    static Graph *graph = new Graph(5);
     static int **matrix;
     matrix = InitializeMatricePointer(matrix, 5);
     Graph *matrice = new Graph(matrix);
@@ -74,16 +85,26 @@ int main(int argc, const char * argv[]) {
     for(auto g : graph->ReturnNumberOfArchAndVertices()){
         cout<< g << endl;
     }
+    graph->Remove(3,0);
+    graph->Remove(4, 0);
+    graph->Remove(1, 1);
+    graph->Remove(0, 1);
+    graph->Insert(3, 0, 5);
+    graph->Insert(4, 0, 3);
+    graph->Insert(1,1,6);
+    graph->Insert(0,1,4);
+    int *vector = graph->NearestNaybor(0);
     
-    //int *vector = graph->Dijkstra(1, 4);
-    /*for(int j = 0; j<5; j++)
+    for(int j = 0; j<6; j++)
     {
         cout << vector[j];
-        cout << " - ";
-    }*/
+        if(j<7){
+            cout << " - ";
+        }
+    }
     
     //cout << vector << endl;
- 
+    cout << "" << endl;
     PrintMatrice(graph->Matriz);
    /* PrintMatrice(graph->Matriz);
     PrintMatrice(matrice->Matriz);

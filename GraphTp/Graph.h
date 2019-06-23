@@ -62,7 +62,8 @@ public:
         
         for(int a = 0; a<this->n_Vertices; a++){
             for(int b =0; b<this->n_Vertices; b++){
-                Matriz[a][b] = (rand() % 2 - 0);
+                //Matriz[a][b] = (rand() % 2 - 0);
+                Matriz[a][b] = 0;
             }
             this->Matriz[a][a] = 0;
         }
@@ -81,14 +82,15 @@ public:
         this->SetNumberOfArchs();
     }
     //insert a arc by coordenates
-    bool Insert(int x_coordenates, int y_coordenates)
+    bool Insert(int x_coordenates, int y_coordenates, int weight)
     {
         try{
             if(this->Matriz[x_coordenates][y_coordenates]){
                 return false;
             }
             else if(!this->Matriz[x_coordenates][y_coordenates]){
-                this->Matriz[x_coordenates][y_coordenates] = 1;
+                this->Matriz[x_coordenates][y_coordenates] = weight;
+                this->Matriz[y_coordenates][x_coordenates] = weight;
                 this->n_Arestas++;
             }
             return true;
@@ -107,6 +109,7 @@ public:
             }
             else if(this->Matriz[x_coordenates][y_coordenates]){
                 this->Matriz[x_coordenates][y_coordenates] = 0;
+                this->Matriz[y_coordenates][x_coordenates] = 0;
                 this->n_Arestas--;
             }
             return true;
@@ -211,7 +214,7 @@ public:
     //Busca pelo Algoritmo de Dijkstra
     int* Dijkstra(int x, int y)
     {
-        bool visited[n_Vertices];
+       /* bool visited[n_Vertices];
         int *distance = new int[this->n_Vertices];
         
         for(int i=0; i<n_Vertices; i++) {
@@ -237,11 +240,90 @@ public:
             }
         }
         
+        return distance;*/
+        
+        
+
+            bool *visited = new bool[x];
+            int *distance = new int[x];
+            
+            for(int i=0; i<x; i++) {
+                visited[i] = false;
+                distance[i] = INF;
+            }
+            distance[x] = 0;
+            
+            for(int i = 0; i<x; i++){
+                int minVertex = -1;
+                for(int i=0; i<x; i++){
+                    if(!visited[i] && (minVertex == -1 || distance[i] < distance[minVertex]))
+                        minVertex = i;
+                }
+            
+                
+                
+                for(int j=0; j<x; j++){
+                    if(this->Matriz[minVertex][j] != 0 && !visited[j]){
+                        int dist = distance[minVertex] + this->Matriz[minVertex][j];
+                        if(dist< distance[j]){
+                            distance[j] = dist;
+                        }
+                        
+                    }
+                }
+            }
         return distance;
     }
     
     //Problema do caixeiro viajante
-    
+    int* NearestNaybor(int x)
+    {
+        bool *inserted = new bool[this->n_Vertices];
+        int  *path = new int[this->n_Vertices+1];
+        for(int a = 0; a<this->n_Vertices; a++)
+        {
+            inserted[a] = false;
+        }
+        
+        path[0] = x;
+        inserted[x] = true;
+        
+        for(int i = 0; i<n_Vertices; i++)
+        {
+            int referenceValue = INF;
+            int nextValue = 0;
+            
+            for(int a = 0; a<n_Vertices; a++)
+            {
+                for(int j = 0; j<n_Vertices; j++)
+                {
+                    if(!inserted[j] && referenceValue > Matriz[a][j])
+                    {
+                        if(!Matriz[a][j])
+                        {
+                            this->Insert(i, j, 1);
+                        }
+                        nextValue = j;
+                        referenceValue = Matriz[a][j];
+                    }
+                    
+                }
+            }
+            
+            path[i+1] = nextValue;
+            inserted[nextValue] = true;
+        }
+        int pathCount = 0;
+        path[n_Vertices] = x;
+        for(int i = 0; i <n_Vertices; i++)
+        {
+            pathCount += this->Matriz[path[i]][path[i+1]];
+        }
+        cout << pathCount <<endl;
+        
+        
+        return path;
+    }
     
     
 };
