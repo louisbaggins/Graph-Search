@@ -62,7 +62,6 @@ public:
         
         for(int a = 0; a<this->n_Vertices; a++){
             for(int b =0; b<this->n_Vertices; b++){
-                //Matriz[a][b] = (rand() % 2 - 0);
                 Matriz[a][b] = 0;
             }
             this->Matriz[a][a] = 0;
@@ -214,64 +213,65 @@ public:
     //Busca pelo Algoritmo de Dijkstra
     int* Dijkstra(int x, int y)
     {
-       /* bool visited[n_Vertices];
-        int *distance = new int[this->n_Vertices];
+        /* bool visited[n_Vertices];
+         int *distance = new int[this->n_Vertices];
+         
+         for(int i=0; i<n_Vertices; i++) {
+         visited[i] = false;
+         distance[i] = INF;
+         }
+         distance[x] = 0;
+         int no = -1;
+         
+         while(!visited[y]) {
+         for(int i=0; i<this->n_Vertices; i++){
+         if(!visited[i] && (no == -1 || distance[i] < distance[no]))
+         no = i;
+         }
+         visited[no] = 1;
+         
+         if(distance[no] == INF)
+         break;
+         
+         for(int i=0; i<n_Vertices; i++){
+         if(distance[i] > distance[no]+this->Matriz[no][i])
+         distance[i] = distance[no]+this->Matriz[no][i];
+         }
+         }
+         
+         return distance;*/
         
-        for(int i=0; i<n_Vertices; i++) {
+        
+        
+        bool *visited = new bool[x];
+        int *distance = new int[x];
+        
+        for(int i=0; i<x; i++) {
             visited[i] = false;
             distance[i] = INF;
         }
         distance[x] = 0;
-        int no = -1;
         
-        while(!visited[y]) {
-            for(int i=0; i<this->n_Vertices; i++){
-                if(!visited[i] && (no == -1 || distance[i] < distance[no]))
-                    no = i;
+        for(int i = 0; i<x; i++)
+        {
+            int minVertex = -1;
+            for(int i=0; i<x; i++){
+                if(!visited[i] && (minVertex == -1 || distance[i] < distance[minVertex]))
+                    minVertex = i;
             }
-            visited[no] = 1;
             
-            if(distance[no] == INF)
-                break;
             
-            for(int i=0; i<n_Vertices; i++){
-                if(distance[i] > distance[no]+this->Matriz[no][i])
-                    distance[i] = distance[no]+this->Matriz[no][i];
+            
+            for(int j=0; j<x; j++){
+                if(this->Matriz[minVertex][j] != 0 && !visited[j]){
+                    int dist = distance[minVertex] + this->Matriz[minVertex][j];
+                    if(dist< distance[j]){
+                        distance[j] = dist;
+                    }
+                    
+                }
             }
         }
-        
-        return distance;*/
-        
-        
-
-            bool *visited = new bool[x];
-            int *distance = new int[x];
-            
-            for(int i=0; i<x; i++) {
-                visited[i] = false;
-                distance[i] = INF;
-            }
-            distance[x] = 0;
-            
-            for(int i = 0; i<x; i++){
-                int minVertex = -1;
-                for(int i=0; i<x; i++){
-                    if(!visited[i] && (minVertex == -1 || distance[i] < distance[minVertex]))
-                        minVertex = i;
-                }
-            
-                
-                
-                for(int j=0; j<x; j++){
-                    if(this->Matriz[minVertex][j] != 0 && !visited[j]){
-                        int dist = distance[minVertex] + this->Matriz[minVertex][j];
-                        if(dist< distance[j]){
-                            distance[j] = dist;
-                        }
-                        
-                    }
-                }
-            }
         return distance;
     }
     
@@ -324,6 +324,66 @@ public:
         
         return path;
     }
+    
+    
+    int* PrimAlgorithm(int x)
+    {
+        int* father = new int[this->n_Vertices];
+        int *level = new int[this->n_Vertices];
+        int actualVertex = x;
+        int lowestWeight;
+        int son = 0;
+        for(int a = 0; a<n_Vertices; a++)
+        {
+            father[a] = -1;
+            level[a] = 0;
+        }
+        father[x] = x;
+        
+        while(true)
+        {
+            bool first = true;
+            for(int i = 0; i < n_Vertices; i++){
+                if(father[i] != -1){
+                    for(int j = 0; j < n_Vertices; j++){
+                        if(father[j] == -1 && Matriz[i][j]){
+                            if(first){
+                                lowestWeight = Matriz[i][j];
+                                actualVertex = i;
+                                son = j;
+                                first = false;
+                                
+                            }
+                            else{
+                                if(lowestWeight > Matriz[i][j]){
+                                    lowestWeight = Matriz[i][j];
+                                    actualVertex = i;
+                                    son = j;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            
+            
+            father[son] = actualVertex;
+            if(first)
+                break;
+            
+        }
+        
+        return father;
+    }
+    
+    
+    
+    
+    
+    
+    
+    
+    
     
     
 };

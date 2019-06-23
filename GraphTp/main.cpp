@@ -98,7 +98,16 @@ int main(int argc, const char * argv[]) {
     for(int j = 0; j<6; j++)
     {
         cout << vector[j];
-        if(j<7){
+        if(j<5){
+            cout << " - ";
+        }
+    }
+    int *tree = graph->PrimAlgorithm(1);
+    cout << "" << endl;
+    for(int j = 0; j<5; j++)
+    {
+        cout << tree[j];
+        if(j<4){
             cout << " - ";
         }
     }
