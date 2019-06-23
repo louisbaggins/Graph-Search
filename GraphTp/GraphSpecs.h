@@ -19,7 +19,6 @@ private:
     int edges;
     list<Codernates> coodernates;
 public:
-    
     GraphSpecs(){}
     
     GraphSpecs(int edges, list<Codernates> cod)
@@ -32,6 +31,11 @@ public:
     {
         Codernates *params = new Codernates(atoi(x.c_str()), atoi(y.c_str()), atoi(weight.c_str()));
         coodernates.push_back(*params);
+    }
+    
+    list<Codernates> GetCoodernates()
+    {
+        return coodernates;
     }
 };
 

@@ -12,6 +12,7 @@
 #include <queue>
 #include <limits.h>
 #include <math.h>
+#include "Codernates.h"
 #ifndef Graph_h
 #define Graph_h
 const int INF = INT_MAX/2;
@@ -42,7 +43,11 @@ private:
         {
             if(this->Matriz[pos][i] && !visitedVertex[i])
             {
-                cout << i << endl;
+                cout << i;
+                if(i<n_Vertices-1)
+                {
+                    cout << " - ";
+                }
                 DFS(i, visitedVertex);
             }
         }
@@ -85,19 +90,21 @@ public:
     {
         try{
             if(this->Matriz[x_coordenates][y_coordenates]){
+                cout<< "As arestas em "<<x_coordenates<< "-"<<y_coordenates<<" não foram inseridas"<< endl;
                 return false;
             }
             else if(!this->Matriz[x_coordenates][y_coordenates]){
                 this->Matriz[x_coordenates][y_coordenates] = weight;
                 this->Matriz[y_coordenates][x_coordenates] = weight;
                 this->n_Arestas++;
+                cout << "Arestas inseridas com sucesso" <<endl;
             }
             return true;
         }
         catch(exception e){
             throw e;
         }
-    }
+    }    
     
     //remove a arc by coordenates
     bool Remove(int x_coordenates, int y_coordenates)
@@ -166,7 +173,7 @@ public:
     }
     
     //Bradth First Search - BFS
-    list<int> BreadthFirstSearch(int x, int y)
+    list<int> BreadthFirstSearch(int x)
     {
         bool *visitedVertex = new bool[x];
         list<int> order;
@@ -205,7 +212,7 @@ public:
     void DeepFirstSearch(int x)
     {
         bool *visitedVertex = new bool[this->n_Vertices];
-        cout << x << endl;
+        cout << x << " - ";
         this->DFS(x, visitedVertex);
     }
     
@@ -301,7 +308,7 @@ public:
                     {
                         if(!Matriz[a][j])
                         {
-                            this->Insert(i, j, 1);
+                            this->Insert(a, j, 1);
                         }
                         nextValue = j;
                         referenceValue = Matriz[a][j];
@@ -319,7 +326,7 @@ public:
         {
             pathCount += this->Matriz[path[i]][path[i+1]];
         }
-        cout << pathCount <<endl;
+        cout << "Custo do caminho encontrado: " << pathCount << endl;
         
         
         return path;

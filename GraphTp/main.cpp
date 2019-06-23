@@ -51,12 +51,14 @@ int main(int argc, const char * argv[]) {
     // insert code here...
     
     GraphSpecs *graphSpecs = new GraphSpecs();
-    ifstream ip("/Users/luisaraujo/Desktop/POO/GraphTp/GraphTp/GraphValues.csv");
+    ifstream ip("/Users/luisaraujo/Desktop/POO/GraphTp/GraphTp/GraphValues.txt");
     
     if(!ip.is_open()){
         cout << "Error on reading file" << endl;
     }
     
+    bool first = true;
+    int count = 0;
     int size;
     string sizes;
     string x;
@@ -64,10 +66,18 @@ int main(int argc, const char * argv[]) {
     string weight;
     while(ip.good())
     {
+        
+        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+        
+        if(first){
+            getline(ip, sizes, ',');
+            first = false;
+        }
+        
         getline(ip,x,',');
         getline(ip,y,',') ;
         getline(ip,weight,'\n') ;
-        
+        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
         graphSpecs->AddSpecs(x, y, weight);
     }
     
@@ -76,25 +86,66 @@ int main(int argc, const char * argv[]) {
     
     size = atoi(sizes.c_str());
     
-    static Graph *graph = new Graph(5);
+    static Graph *graph = new Graph(size);
     static int **matrix;
     matrix = InitializeMatricePointer(matrix, 5);
-    Graph *matrice = new Graph(matrix);
-    //InitializeMatrice(matrix, 1);
-    
-    for(auto g : graph->ReturnNumberOfArchAndVertices()){
-        cout<< g << endl;
+    //setting archs
+    for(auto c: graphSpecs->GetCoodernates())
+    {
+        graph->Insert(c.x, c.y, c.weight);
     }
-    graph->Remove(3,0);
-    graph->Remove(4, 0);
-    graph->Remove(1, 1);
-    graph->Remove(0, 1);
+    PrintMatrice(graph->Matriz); cout<<""<<endl;
+    //number of arch and vertices
+    list<int> vertex = graph->ReturnNumberOfArchAndVertices();
+    cout << "Número de vértices: " << vertex.front() << endl;
+    cout << "Número de arestas: " << vertex.back() << endl;
+    
+    
+    if(graph->Remove(0,1))
+    {
+        cout << "Aresta removida em: "<<0<<"-"<<1<<endl;
+    }
+    else{
+        cout << "Não há aresta em: "<<0<<"-"<<1<<endl;
+    }
+
     graph->Insert(3, 0, 5);
     graph->Insert(4, 0, 3);
     graph->Insert(1,1,6);
-    graph->Insert(0,1,4);
-    int *vector = graph->NearestNaybor(0);
+    //graph->Insert(0,1,4);
     
+    cout <<"Caminho Busca em profundidade: ";
+    graph->DeepFirstSearch(0);
+    cout << "" <<endl;
+    cout <<"Caminho Busca em largura: ";
+    list<int> bfs = graph->BreadthFirstSearch(0);
+    for(auto b : bfs)
+    {
+        cout << b;
+        if(b != bfs.back())
+            cout<< " - ";
+        else
+            cout << "" << endl;
+    }
+    if(!graph->VerifyIfTheGraphIsComplete())
+    {
+        cout << "O grafo não está completo, completando o grafo..."<<endl;
+        try{
+            graph->CompletesTheGraph();
+            cout <<"Grafo completado com sucesso!" <<endl;
+        }
+        catch(exception e){
+            cout<< "Erro ao completar o grafo" << endl;
+        }
+        
+    }
+    else{
+        cout <<"O grafo está completo!" <<endl;
+    }
+    
+    cout <<"Resolvendo o problema do caixeiro viajante usando a heurística do vizinho mais próximo, iniciando em 0: " <<endl;
+    int *vector = graph->NearestNaybor(0);
+    cout <<"Caminho encontrado: ";
     for(int j = 0; j<6; j++)
     {
         cout << vector[j];
@@ -102,28 +153,17 @@ int main(int argc, const char * argv[]) {
             cout << " - ";
         }
     }
-    int *tree = graph->PrimAlgorithm(1);
+    cout <<""<<endl;
+    cout << "Árvore geradora mínima pelo algorítmo de Prim: "<<endl;
+    int *tree = graph->PrimAlgorithm(2);
     cout << "" << endl;
     for(int j = 0; j<5; j++)
     {
-        cout << tree[j];
-        if(j<4){
-            cout << " - ";
-        }
+        cout <<"Vértice pai do vértice "<< j << ": "<< tree[j]<<endl;
     }
     
     //cout << vector << endl;
-    cout << "" << endl;
+    cout << "Matriz de adjacência final: " << endl;
     PrintMatrice(graph->Matriz);
-   /* PrintMatrice(graph->Matriz);
-    PrintMatrice(matrice->Matriz);
-    graph->DeepFirstSearch(0);
-    cout << "" << endl;
-    graph->Remove(0, 1);
-    graph->Remove(2, 1);
-    for(auto g : graph->BreadthFirstSearch(0, 2)){
-        cout<< g << endl;
-    }*/
-    
     return 0;
 }
