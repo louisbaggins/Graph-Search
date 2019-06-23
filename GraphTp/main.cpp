@@ -163,7 +163,10 @@ int main(int argc, const char * argv[]) {
     }
     
     //cout << vector << endl;
+    graph->Dijkstra(1, 3);
     cout << "Matriz de adjacência final: " << endl;
+    
+    cout<< "" << endl;
     PrintMatrice(graph->Matriz);
     return 0;
 }

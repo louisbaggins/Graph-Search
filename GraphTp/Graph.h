@@ -215,71 +215,55 @@ public:
         cout << x << " - ";
         this->DFS(x, visitedVertex);
     }
-    
-    
-    //Busca pelo Algoritmo de Dijkstra
-    int* Dijkstra(int x, int y)
+
+    void Dijkstra(int x, int y)
     {
-        /* bool visited[n_Vertices];
-         int *distance = new int[this->n_Vertices];
-         
-         for(int i=0; i<n_Vertices; i++) {
-         visited[i] = false;
-         distance[i] = INF;
-         }
-         distance[x] = 0;
-         int no = -1;
-         
-         while(!visited[y]) {
-         for(int i=0; i<this->n_Vertices; i++){
-         if(!visited[i] && (no == -1 || distance[i] < distance[no]))
-         no = i;
-         }
-         visited[no] = 1;
-         
-         if(distance[no] == INF)
-         break;
-         
-         for(int i=0; i<n_Vertices; i++){
-         if(distance[i] > distance[no]+this->Matriz[no][i])
-         distance[i] = distance[no]+this->Matriz[no][i];
-         }
-         }
-         
-         return distance;*/
-        
-        
-        
-        bool *visited = new bool[x];
-        int *distance = new int[x];
-        
-        for(int i=0; i<x; i++) {
-            visited[i] = false;
+        int distance[n_Vertices];
+        list<int> path;
+        bool visited[n_Vertices];
+        for (int i = 0; i < n_Vertices; i++){
             distance[i] = INF;
+            visited[i] = false;
         }
         distance[x] = 0;
         
-        for(int i = 0; i<x; i++)
+        for (int count = 0; count < n_Vertices-1; count++)
         {
-            int minVertex = -1;
-            for(int i=0; i<x; i++){
-                if(!visited[i] && (minVertex == -1 || distance[i] < distance[minVertex]))
-                    minVertex = i;
-            }
+            int min = INF;
+            int minValue;
             
-            
-            
-            for(int j=0; j<x; j++){
-                if(this->Matriz[minVertex][j] != 0 && !visited[j]){
-                    int dist = distance[minVertex] + this->Matriz[minVertex][j];
-                    if(dist< distance[j]){
-                        distance[j] = dist;
-                    }
-                    
+            for (int v = 0; v < n_Vertices; v++)
+                if (visited[v] == false && distance[v] <= min){
+                    min = distance[v];
+                    minValue = v;
                 }
+            
+            int u = minValue;
+
+            visited[u] = true;
+
+            for (int v = 0; v < n_Vertices; v++)
+                
+                if (!visited[v] && Matriz[u][v] && distance[u] != INF && distance[u]+Matriz[u][v] < distance[v])
+                {
+                    distance[v] = distance[u] + Matriz[u][v];
+                    if(v == y){
+                        path.push_back(u);
+                    }
+                }
+        }
+
+        cout << "Distância do vértice " << x << " para o vértice " << y << ": " << distance[y]<<endl;
+        cout << "Caminho para chegar ao vértice "<< y<<": ";
+        for(auto p : path){
+            cout << p;
+            if(p != path.back())
+                cout << " - ";
+            else{
+                cout<< " - " << y <<endl;
             }
         }
-        return distance;
+        
     }
     
     //Problema do caixeiro viajante
