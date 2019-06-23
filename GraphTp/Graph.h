@@ -85,6 +85,13 @@ public:
         this->Matriz = matrice;
         this->SetNumberOfArchs();
     }
+    
+    ~Graph(){
+        for(int i = 0; i < n_Vertices; i++){
+            delete[] Matriz[i];
+        }
+        delete[] Matriz;
+    }
     //insert a arc by coordenates
     bool Insert(int x_coordenates, int y_coordenates, int weight)
     {
