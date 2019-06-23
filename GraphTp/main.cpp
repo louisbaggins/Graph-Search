@@ -34,14 +34,14 @@ int** InitializeMatrice(int **matrice, int i)
         
     }
     
-  
+    
     return matrice;
 }
 int** InitializeMatricePointer(int **matrice, int n)
 {
     matrice = (int **)calloc(n, sizeof(int*));
     for(int a = 0; a< 5; a++){
-            matrice[a] = new int[n];
+        matrice[a] = new int[n];
     }
     return InitializeMatrice(matrice, n);
 }
@@ -108,7 +108,7 @@ int main(int argc, const char * argv[]) {
     else{
         cout << "Não há aresta em: "<<0<<"-"<<1<<endl;
     }
-
+    
     graph->Insert(3, 0, 5);
     graph->Insert(4, 0, 3);
     graph->Insert(1,1,6);
