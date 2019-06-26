@@ -39,7 +39,7 @@ bool Insert(int x, int y)
 ```
 Função membro da classe Graph, que recebe uma coordenada e adiciona uma aresta no grafo, caso ela ainda não exista.
 ```cpp
-bool Insert(int x, int y)
+bool Remove(int x, int y)
 ```
 Função membro da classe Graph, que recebe uma coordenada e remove uma aresta do grafo.
 ```cpp
